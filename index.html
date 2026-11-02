@@ -1,0 +1,949 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>UTS Sistem Operasi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: header sticky, satu kolom, tab bawah 4 menu (Kisi-kisi, Materi, Latihan, Simulasi). Isi dibaca sambil scroll, data dihitung di Simulasi. */
+:root {
+  color-scheme: dark;
+  --bg: #000000;
+  --surface: #0C0C0C;
+  --ink: #F5F5F5;
+  --muted: #9B9B9B;
+  --line: #262626;
+  --line-strong: #444444;
+  --accent: #FFFFFF;
+  --accent-ink: #000000;
+  --accent-soft: #1A1A1A;
+  --good: #FFFFFF;
+  --good-soft: #1A1A1A;
+  --bad: #8C8C8C;
+  --bad-soft: #101010;
+  --hd: #000000;
+  --sans: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15.5px/1.55 var(--sans); -webkit-text-size-adjust: 100%; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--hd); }
+.pad { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+h1, h2, h3, p, ul, ol, dl, dd { margin: 0; }
+h2, h3 { text-wrap: balance; }
+button { font: inherit; color: inherit; }
+
+/* header + tab bawah */
+.hd { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--hd); border-bottom: 1px solid var(--line); }
+.hd-in { max-width: 720px; margin: 0 auto; padding-block: 10px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.eyebrow { font: 500 11px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.hd h1 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -.01em; }
+.prog { font: 500 12px/1 var(--mono); padding: 7px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+.nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9; background: var(--hd); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.nav-in { max-width: 720px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
+.nav a { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 9px 4px 8px; color: var(--muted); text-decoration: none; font-size: 11.5px; font-weight: 500; min-width: 0; }
+.nav a svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.nav a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+
+main { max-width: 720px; margin: 0 auto; padding-block: 22px 104px; }
+.view { display: flex; flex-direction: column; gap: 14px; }
+.view > h2 { font-size: 26px; line-height: 1.15; font-weight: 700; letter-spacing: -.015em; }
+.view > h3 { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
+.lead { color: var(--muted); max-width: 62ch; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; min-width: 0; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; min-width: 0; }
+.tag { display: inline-block; font: 500 11px/1 var(--mono); letter-spacing: .04em; text-transform: uppercase; padding: 5px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); }
+.meta { font: 400 12px/1.4 var(--mono); color: var(--muted); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); font-weight: 600; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--accent); }
+.link { background: none; border: 0; padding: 6px 0; color: var(--accent); font-weight: 600; cursor: pointer; text-align: left; }
+.link::after { content: " \2192"; }
+.bar { height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+
+/* kisi-kisi */
+.topics { list-style: none; padding: 0; }
+.tp { display: grid; grid-template-columns: auto 1fr; gap: 14px; padding: 14px 16px; border-top: 1px solid var(--line); }
+.tp:first-child { border-top: 0; }
+.ck { display: grid; place-items: start center; padding-top: 2px; }
+.ck input { width: 22px; height: 22px; margin: 0; accent-color: var(--accent); }
+.tb { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.tb h3 { font-size: 16.5px; line-height: 1.3; font-weight: 600; }
+.tb p { color: var(--muted); font-size: 14.5px; }
+.tb .meta { margin-top: 2px; }
+.clo { display: flex; flex-direction: column; gap: 14px; }
+.clo-row { display: flex; flex-direction: column; gap: 6px; }
+.clo-top { display: flex; justify-content: space-between; font-weight: 600; }
+.clo-top b { font-family: var(--mono); font-weight: 500; color: var(--accent); }
+.clo-row p { color: var(--muted); font-size: 14.5px; }
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th { text-align: left; font: 600 11.5px/1.2 var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); padding: 0 10px 8px 0; }
+td { padding: 10px 10px 10px 0; border-top: 1px solid var(--line); vertical-align: top; }
+td.n, th.n { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; padding-right: 0; }
+.note { font-size: 13.5px; color: var(--muted); }
+
+/* materi */
+.mt { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 72px); }
+.mt > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; padding: 15px 16px; }
+.mt > summary::-webkit-details-marker { display: none; }
+.mt > summary::after { content: ""; width: 9px; height: 9px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); margin-right: 4px; transition: transform .2s; }
+.mt[open] > summary::after { transform: rotate(-135deg); }
+.sn { display: block; font-size: 17px; font-weight: 600; line-height: 1.3; }
+.ss { display: block; font-size: 13.5px; color: var(--muted); margin-top: 2px; }
+.mb { padding: 2px 16px 18px; display: flex; flex-direction: column; gap: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+.mb h4 { margin: 0; font: 600 12px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.mb ul, .mb ol { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.def { display: flex; flex-direction: column; gap: 10px; }
+.def > div { display: grid; grid-template-columns: 96px 1fr; gap: 10px; }
+.def dt { font: 600 12.5px/1.5 var(--mono); color: var(--accent); }
+.def dd { min-width: 0; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.two > div { background: var(--bg); border-radius: 10px; padding: 12px; min-width: 0; }
+.two h4 { margin-bottom: 6px; }
+.two ul { padding-left: 16px; gap: 3px; font-size: 14.5px; }
+.formula { background: var(--accent-soft); border-radius: 10px; padding: 12px 14px; font: 500 13.5px/1.7 var(--mono); color: var(--ink); }
+.algo { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+.algo h4 { font: 700 15px/1.3 var(--sans); letter-spacing: 0; text-transform: none; color: var(--ink); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.algo .pill { font: 500 11px/1 var(--mono); padding: 4px 7px; border-radius: 6px; background: var(--bg); color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.algo p { font-size: 14.5px; }
+.algo .ln { display: grid; grid-template-columns: 62px 1fr; gap: 8px; }
+.algo .ln b { font: 600 11.5px/1.7 var(--mono); color: var(--muted); text-transform: uppercase; }
+.dg { display: block; width: 100%; max-width: 440px; height: auto; margin: 0 auto; }
+.dg .bx { fill: var(--surface); stroke: var(--line-strong); stroke-width: 1.25; }
+.dg .bx.hot { fill: var(--accent-soft); stroke: var(--accent); }
+.dg .bx.dev { stroke-dasharray: 3 3; }
+.dg .bus { fill: none; stroke: var(--muted); stroke-width: 1.5; }
+.dg .mk { fill: var(--muted); }
+.dg text { font-family: var(--mono); fill: var(--ink); }
+.dg .lb { font-size: 9px; font-weight: 500; fill: var(--muted); letter-spacing: .05em; }
+.dg .bt { font-size: 9px; font-weight: 600; }
+.dg .bt.big { font-size: 9.5px; }
+.search { width: 100%; min-height: 44px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--bg); color: var(--ink); padding: 0 14px; font: inherit; }
+.gl { display: flex; flex-direction: column; }
+.gi { display: grid; grid-template-columns: 112px 1fr; gap: 10px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 14.5px; }
+.gi b { font-weight: 600; }
+.gi span { color: var(--muted); min-width: 0; }
+.empty { color: var(--muted); padding: 10px 0; }
+.fam { display: flex; flex-direction: column; gap: 10px; }
+.fam > div { display: grid; grid-template-columns: 112px 1fr; gap: 10px; }
+.fam b { font: 600 12px/1.6 var(--mono); color: var(--accent); }
+
+/* kuis dan uraian */
+.qh { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.cnt { font: 500 12px/1 var(--mono); color: var(--muted); }
+.qq { font-size: 17.5px; line-height: 1.45; font-weight: 600; margin: 16px 0 14px; text-wrap: pretty; }
+.opts { display: flex; flex-direction: column; gap: 9px; }
+.opt { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; text-align: left; width: 100%; min-height: 48px; padding: 11px 12px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--surface); cursor: pointer; }
+.opt .ol { font: 600 12px/22px var(--mono); width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--bg); color: var(--muted); }
+.opt:disabled { cursor: default; }
+.opt.ok { border-color: var(--good); background: var(--good-soft); }
+.opt.ok .ol { background: var(--good); color: var(--accent-ink); }
+.opt.bad { border-color: var(--bad); border-style: dashed; background: var(--bad-soft); }
+.opt.bad .ol { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--bad); }
+.fb { margin-top: 14px; padding: 12px 14px; border-radius: 10px; font-size: 14.5px; }
+.fb.ok { background: var(--good-soft); border-left: 3px solid var(--good); }
+.fb.bad { background: var(--bad-soft); border-left: 3px dashed var(--bad); }
+.fb strong { display: block; margin-bottom: 2px; }
+.qa { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 18px; }
+.chip { min-height: 38px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface); cursor: pointer; font-size: 14px; font-weight: 500; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.score { font: 600 44px/1 var(--mono); letter-spacing: -.02em; color: var(--accent); margin: 8px 0; }
+.ur { display: flex; flex-direction: column; gap: 12px; }
+.ur p { font-weight: 500; }
+textarea { width: 100%; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--bg); color: var(--ink); padding: 11px 12px; font: inherit; resize: vertical; min-height: 96px; }
+.key { background: var(--bg); border-radius: 10px; padding: 14px; font-size: 14.5px; display: flex; flex-direction: column; gap: 8px; }
+.key ul, .key ol { padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+.counter { font: 500 13px/1 var(--mono); color: var(--muted); }
+.counter.full { color: var(--good); }
+
+/* simulasi */
+.seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 4px; background: var(--line); border-radius: 12px; }
+.seg button { min-height: 42px; border: 0; border-radius: 9px; background: transparent; font-weight: 600; font-size: 13.5px; color: var(--muted); cursor: pointer; padding: 0 2px; }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--accent); box-shadow: 0 1px 2px rgba(0, 0, 0, .12); }
+.opts-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; }
+.fld { display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: var(--muted); }
+.fld input, .fld select { min-height: 42px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--bg); color: var(--ink); padding: 0 10px; font: 500 15px var(--mono); }
+.fld select { font-family: var(--sans); }
+.sim-tbl { width: 100%; }
+.sim-tbl td, .sim-tbl th { padding: 6px 8px 6px 0; border-top: 0; text-align: center; }
+.sim-tbl th:first-child, .sim-tbl td:first-child { text-align: left; }
+.sim-tbl input { width: 100%; min-width: 0; min-height: 40px; text-align: center; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--bg); color: var(--ink); font: 500 15px var(--mono); }
+.pid { display: inline-flex; align-items: center; gap: 7px; font: 600 13px var(--mono); }
+.sw { width: 12px; height: 12px; border-radius: 4px; background: hsl(0 0% calc(var(--h) * 1%)); border: 1px solid var(--line-strong); flex: none; }
+.gscroll { overflow-x: auto; padding-bottom: 6px; margin-inline: -4px; padding-inline: 4px; }
+.gantt { display: flex; width: max-content; padding-right: 34px; }
+.gcol { flex: none; display: flex; flex-direction: column; }
+.blk { height: 42px; display: grid; place-items: center; font: 600 11px var(--mono); background: hsl(0 0% calc(var(--h) * 1%)); color: hsl(0 0% calc((50 - var(--h)) * 1000%)); border-right: 2px solid var(--surface); overflow: hidden; border-radius: 0; }
+.gcol:first-child .blk { border-radius: 6px 0 0 6px; }
+.alt { background-image: repeating-linear-gradient(135deg, rgba(128, 128, 128, .5) 0 3px, transparent 3px 6px); }
+.blk.idle { background: repeating-linear-gradient(135deg, var(--line) 0 4px, transparent 4px 8px); color: var(--muted); }
+.tk { font: 400 10.5px/1 var(--mono); color: var(--muted); margin: 5px 0 0 -2px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gcol.end { width: 0; }
+.gantt[data-hl] .blk:not(.on) { opacity: .25; }
+.hint { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+.res td { cursor: pointer; }
+.res tr.sel td { background: var(--accent-soft); }
+.avg { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 2px solid var(--ink); padding-top: 12px; margin-top: 4px; }
+.avg b { font: 600 30px/1 var(--mono); color: var(--accent); letter-spacing: -.02em; }
+.avg span { font: 400 12.5px var(--mono); color: var(--muted); }
+.cmp { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.cmp button { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--surface); cursor: pointer; text-align: left; }
+.cmp button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.cmp small { font-size: 12px; color: var(--muted); }
+.cmp b { font: 600 18px var(--mono); font-variant-numeric: tabular-nums; }
+.cmp .best { color: var(--good); }
+@media (min-width: 560px) { .cmp { grid-template-columns: repeat(4, 1fr); } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* splash */
+.splash { position: fixed; inset: 0; z-index: 100; display: grid; place-content: center; justify-items: center; gap: 22px; background: var(--bg); cursor: pointer; animation: sp-out .45s ease 2.4s forwards; }
+.sp-t { font: 600 34px/1.2 var(--mono); letter-spacing: -.01em; color: var(--ink); white-space: nowrap; overflow: hidden; width: 0; border-right: 3px solid var(--ink); animation: sp-type 1.2s steps(10, end) .3s forwards, sp-caret .7s step-end infinite; }
+.sp-bar { width: 168px; height: 2px; background: var(--line); overflow: hidden; }
+.sp-bar i { display: block; height: 100%; width: 0; background: var(--ink); animation: sp-fill 1.9s cubic-bezier(.4, 0, .2, 1) .3s forwards; }
+.sp-s { font: 500 11px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+@keyframes sp-type { to { width: 10ch; } }
+@keyframes sp-caret { 50% { border-right-color: transparent; } }
+@keyframes sp-fill { to { width: 100%; } }
+@keyframes sp-out { to { opacity: 0; visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) {
+  .sp-t { animation: none; width: 10ch; border-right-color: transparent; }
+  .sp-bar i { animation: none; width: 100%; }
+  .splash { animation: sp-out .01s linear 1s forwards; }
+}
+</style>
+
+<div class="splash" id="splash" aria-hidden="true">
+  <div class="sp-t">omahcoding</div>
+  <div class="sp-bar"><i></i></div>
+  <div class="sp-s">Memuat UTS Sistem Operasi</div>
+</div>
+
+<header class="hd">
+  <div class="hd-in pad">
+    <div>
+      <p class="eyebrow">UTS · Closed book</p>
+      <h1>Sistem Operasi</h1>
+    </div>
+    <div class="prog" id="prog" aria-live="polite">0/6 paham</div>
+  </div>
+</header>
+
+<main class="pad">
+
+<!-- KISI-KISI -->
+<section class="view" id="v-kisi" aria-labelledby="h-kisi">
+  <h2 id="h-kisi">Kisi-kisi UTS</h2>
+  <p class="lead">Mulai mengerjakan dengan membaca basmalah. Ujian bersifat closed book. Centang topik yang sudah kamu kuasai.</p>
+  <ul class="topics panel" id="topics"></ul>
+
+  <h3>Bobot capaian pembelajaran</h3>
+  <div class="card clo">
+    <div class="clo-row"><div class="clo-top"><span>CPMK 1</span><b>30</b></div><div class="bar"><i style="width:30%"></i></div><p>Menganalisis cara kerja sistem komputer.</p></div>
+    <div class="clo-row"><div class="clo-top"><span>CPMK 2</span><b>35</b></div><div class="bar"><i style="width:35%"></i></div><p>Menganalisis metode dan algoritma sistem komputer untuk memecahkan masalah organisasi.</p></div>
+    <div class="clo-row"><div class="clo-top"><span>CPMK 3</span><b>35</b></div><div class="bar"><i style="width:35%"></i></div><p>Menguasai konsep teoritis informatika untuk aplikasi teknologi multi-platform.</p></div>
+  </div>
+
+  <h3>Pola contoh soal</h3>
+  <div class="card">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>No</th><th>Soal</th><th class="n">Poin</th><th class="n">CPMK</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Jelaskan fungsi tiap komponen sistem komputer dan cara kerjanya (dari diagram).</td><td class="n">20</td><td class="n">1</td></tr>
+          <tr><td>2</td><td>Sebutkan dan jelaskan keadaan proses, gambarkan diagramnya.</td><td class="n">20</td><td class="n">1</td></tr>
+          <tr><td>3</td><td>Gantt chart dan rata-rata waiting time: FCFS, SJF, Priority, Round Robin (q = 3).</td><td class="n">50</td><td class="n">2</td></tr>
+          <tr><td>4</td><td>Sebutkan 15 macam distro Linux.</td><td class="n">-</td><td class="n">-</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" style="margin-top:10px">Poin dan CPMK soal 4 tidak terlihat di foto contoh soal. Topik multithread dan istilah ada di kisi-kisi dosen, tetapi belum muncul di contoh soal.</p>
+  </div>
+</section>
+
+<!-- MATERI -->
+<section class="view" id="v-materi" aria-labelledby="h-materi" hidden>
+  <h2 id="h-materi">Materi singkat</h2>
+  <p class="lead">Ketuk judul untuk membuka. Isinya hanya poin yang kemungkinan keluar.</p>
+
+  <details class="mt" id="m-thread">
+    <summary><span><span class="sn">Multithread</span><span class="ss">Thread, bagian yang dibagi, model thread</span></span></summary>
+    <div class="mb">
+      <p><b>Thread</b> adalah unit eksekusi terkecil di dalam satu proses. Satu proses bisa punya banyak thread yang berjalan bergantian atau bersamaan di beberapa core.</p>
+      <div class="two">
+        <div><h4>Dibagi antar thread</h4><ul><li>Kode program</li><li>Data dan heap</li><li>File yang terbuka</li></ul></div>
+        <div><h4>Milik tiap thread</h4><ul><li>Thread ID</li><li>Program counter</li><li>Register</li><li>Stack</li></ul></div>
+      </div>
+      <h4>Manfaat multithreading</h4>
+      <ul>
+        <li><b>Responsif.</b> Satu thread tetap jalan saat thread lain menunggu.</li>
+        <li><b>Berbagi resource.</b> Memori dan file dipakai bersama tanpa IPC.</li>
+        <li><b>Hemat.</b> Membuat dan berpindah thread lebih ringan daripada proses.</li>
+        <li><b>Skalabel.</b> Memanfaatkan CPU multicore.</li>
+      </ul>
+      <h4>Model hubungan thread</h4>
+      <dl class="def">
+        <div><dt>Many-to-one</dt><dd>Banyak user thread ke satu kernel thread. Satu thread blocking membuat seluruh proses terblokir.</dd></div>
+        <div><dt>One-to-one</dt><dd>Tiap user thread punya satu kernel thread. Bisa paralel, tetapi biaya lebih besar.</dd></div>
+        <div><dt>Many-to-many</dt><dd>Banyak user thread dipetakan ke sejumlah kernel thread. Fleksibel.</dd></div>
+      </dl>
+      <h4>Proses vs thread</h4>
+      <p>Proses punya ruang alamat sendiri, context switch berat, komunikasi lewat IPC. Thread berbagi ruang alamat, context switch ringan, komunikasi lewat memori bersama. Contoh: browser memuat halaman di satu thread dan mengunduh file di thread lain.</p>
+    </div>
+  </details>
+
+  <details class="mt" id="m-proses">
+    <summary><span><span class="sn">Siklus proses</span><span class="ss">Lima state dan transisinya</span></span></summary>
+    <div class="mb">
+      <p><b>Proses</b> adalah program yang sedang dieksekusi. Keadaannya berubah selama berjalan.</p>
+      <svg class="dg" viewBox="0 0 360 250" role="img" aria-labelledby="t-st d-st">
+        <title id="t-st">Diagram state proses</title>
+        <desc id="d-st">New masuk ke Ready lewat admitted. Ready ke Running lewat dispatch. Running kembali ke Ready lewat interrupt. Running ke Waiting lewat I/O atau event wait. Waiting ke Ready saat I/O atau event selesai. Running ke Terminated lewat exit.</desc>
+        <defs><marker id="a2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L8 4L0 8z" class="mk"/></marker></defs>
+        <rect class="bx dev" x="8" y="16" width="66" height="34" rx="6"/><text class="bt big" x="41" y="37" text-anchor="middle">NEW</text>
+        <rect class="bx" x="128" y="16" width="72" height="34" rx="6"/><text class="bt big" x="164" y="37" text-anchor="middle">READY</text>
+        <rect class="bx hot" x="128" y="110" width="72" height="34" rx="6"/><text class="bt big" x="164" y="131" text-anchor="middle">RUNNING</text>
+        <rect class="bx" x="268" y="110" width="72" height="34" rx="6"/><text class="bt big" x="304" y="131" text-anchor="middle">WAITING</text>
+        <rect class="bx dev" x="128" y="204" width="72" height="34" rx="6"/><text class="bt big" x="164" y="225" text-anchor="middle">TERMINATED</text>
+        <path class="bus" d="M74 33H126" marker-end="url(#a2)"/><text class="lb" x="100" y="26" text-anchor="middle">admitted</text>
+        <path class="bus" d="M146 52V108" marker-end="url(#a2)"/><text class="lb" x="140" y="84" text-anchor="end">dispatch</text>
+        <path class="bus" d="M182 108V52" marker-end="url(#a2)"/><text class="lb" x="190" y="84">interrupt</text>
+        <path class="bus" d="M202 127H266" marker-end="url(#a2)"/><text class="lb" x="234" y="108" text-anchor="middle">I/O atau</text><text class="lb" x="234" y="118" text-anchor="middle">event wait</text>
+        <path class="bus" d="M304 108V33H204" marker-end="url(#a2)"/><text class="lb" x="254" y="48" text-anchor="middle">I/O atau event</text><text class="lb" x="254" y="58" text-anchor="middle">selesai</text>
+        <path class="bus" d="M164 146V202" marker-end="url(#a2)"/><text class="lb" x="172" y="178">exit</text>
+      </svg>
+      <dl class="def">
+        <div><dt>New</dt><dd>Proses sedang dibuat.</dd></div>
+        <div><dt>Ready</dt><dd>Siap jalan, menunggu giliran CPU di ready queue.</dd></div>
+        <div><dt>Running</dt><dd>Instruksinya sedang dikerjakan CPU. Satu proses per core.</dd></div>
+        <div><dt>Waiting</dt><dd>Menunggu operasi I/O atau suatu event. Disebut juga Blocked.</dd></div>
+        <div><dt>Terminated</dt><dd>Selesai. Resource dilepas.</dd></div>
+      </dl>
+      <h4>Transisi</h4>
+      <ul>
+        <li><b>Admitted</b>: New ke Ready.</li>
+        <li><b>Dispatch</b>: Ready ke Running, dipilih scheduler.</li>
+        <li><b>Interrupt</b>: Running ke Ready, quantum habis atau ada proses lebih penting.</li>
+        <li><b>I/O atau event wait</b>: Running ke Waiting.</li>
+        <li><b>I/O atau event selesai</b>: Waiting ke Ready, bukan langsung ke Running.</li>
+        <li><b>Exit</b>: Running ke Terminated.</li>
+      </ul>
+      <p><b>PCB</b> (Process Control Block) menyimpan state, program counter, register, info scheduling, dan info memori serta I/O tiap proses.</p>
+    </div>
+  </details>
+
+  <details class="mt" id="m-jadwal">
+    <summary><span><span class="sn">Empat algoritma penjadwalan</span><span class="ss">FCFS, SJF, Priority, Round Robin</span></span></summary>
+    <div class="mb">
+      <div class="formula">Turnaround = selesai - arrival<br>Waiting = turnaround - burst<br>Rata-rata = jumlah waiting / jumlah proses</div>
+      <div class="algo">
+        <h4>FCFS <span class="pill">non-preemptive</span></h4>
+        <div class="ln"><b>Aturan</b><p>Siapa datang dulu, dilayani dulu (antrean FIFO).</p></div>
+        <div class="ln"><b>Plus</b><p>Sederhana dan adil menurut urutan datang.</p></div>
+        <div class="ln"><b>Minus</b><p>Convoy effect: proses pendek menunggu di belakang proses panjang.</p></div>
+        <div class="ln"><b>Trik</b><p>Urutkan berdasarkan arrival time, jalankan sampai selesai.</p></div>
+      </div>
+      <div class="algo">
+        <h4>SJF <span class="pill">non-preemptive</span></h4>
+        <div class="ln"><b>Aturan</b><p>Dari proses yang sudah tiba, pilih burst time terkecil.</p></div>
+        <div class="ln"><b>Plus</b><p>Rata-rata waiting paling kecil.</p></div>
+        <div class="ln"><b>Minus</b><p>Proses panjang bisa kelaparan (starvation). Burst time harus diketahui. Versi preemptive bernama SRTF.</p></div>
+        <div class="ln"><b>Trik</b><p>Setiap proses selesai, cek siapa saja yang sudah tiba, ambil burst terkecil.</p></div>
+      </div>
+      <div class="algo">
+        <h4>Priority <span class="pill">non-preemptive</span></h4>
+        <div class="ln"><b>Aturan</b><p>Pilih proses berprioritas tertinggi yang sudah tiba. Umumnya angka kecil berarti prioritas tinggi. Cek aturan di soal.</p></div>
+        <div class="ln"><b>Plus</b><p>Proses penting didahulukan.</p></div>
+        <div class="ln"><b>Minus</b><p>Prioritas rendah bisa tak pernah jalan. Solusinya aging, yaitu prioritas naik seiring lama menunggu.</p></div>
+        <div class="ln"><b>Trik</b><p>Prioritas sama diselesaikan dengan FCFS.</p></div>
+      </div>
+      <div class="algo">
+        <h4>Round Robin <span class="pill">preemptive</span></h4>
+        <div class="ln"><b>Aturan</b><p>Tiap proses dapat jatah CPU sebesar quantum (di soal q = 3). Jatah habis, proses ke belakang antrean.</p></div>
+        <div class="ln"><b>Plus</b><p>Adil, cocok untuk time-sharing.</p></div>
+        <div class="ln"><b>Minus</b><p>Quantum terlalu besar jadi mirip FCFS. Terlalu kecil membuat context switch terlalu sering.</p></div>
+        <div class="ln"><b>Trik</b><p>Proses yang tiba tepat saat quantum habis masuk antrean lebih dulu daripada proses yang baru dihentikan.</p></div>
+      </div>
+      <button type="button" class="btn" data-go="simulasi">Hitung soal contoh</button>
+    </div>
+  </details>
+
+  <details class="mt" id="m-arsitektur">
+    <summary><span><span class="sn">Fungsi komputer dan arsitektur</span><span class="ss">Komponen, tiga bus, cara kerja instruksi</span></span></summary>
+    <div class="mb">
+      <svg class="dg" viewBox="0 0 360 250" role="img" aria-labelledby="t-ar d-ar">
+        <title id="t-ar">Diagram komponen sistem komputer</title>
+        <desc id="d-ar">Input device dan output device terhubung ke I/O ports. I/O ports, CPU berisi CU dan ALU, serta memori RAM dan ROM terhubung ke data bus di atas dan address bus di bawah. Control bus menghubungkan I/O ports, CPU, dan memori.</desc>
+        <defs><marker id="a1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L8 4L0 8z" class="mk"/></marker></defs>
+        <path class="bus" d="M60 60H316"/><text class="lb" x="188" y="50" text-anchor="middle">DATA BUS</text>
+        <path class="bus" d="M60 62V86" marker-start="url(#a1)" marker-end="url(#a1)"/>
+        <path class="bus" d="M180 62V86" marker-start="url(#a1)" marker-end="url(#a1)"/>
+        <path class="bus" d="M316 62V86" marker-start="url(#a1)" marker-end="url(#a1)"/>
+        <rect class="bx dev" x="12" y="6" width="64" height="34" rx="6"/><text class="bt" x="44" y="20" text-anchor="middle">INPUT</text><text class="bt" x="44" y="31" text-anchor="middle">DEVICE</text>
+        <path class="bus" d="M28 40V86" marker-end="url(#a1)"/>
+        <rect class="bx" x="12" y="88" width="64" height="52" rx="6"/><text class="bt" x="44" y="118" text-anchor="middle">I/O PORTS</text>
+        <rect class="bx hot" x="148" y="88" width="64" height="52" rx="6"/><text class="bt" x="180" y="108" text-anchor="middle">CPU</text><text class="bt" x="180" y="124" text-anchor="middle">CU + ALU</text>
+        <rect class="bx" x="284" y="88" width="64" height="52" rx="6"/><text class="bt" x="316" y="108" text-anchor="middle">MEMORI</text><text class="bt" x="316" y="124" text-anchor="middle">RAM · ROM</text>
+        <path class="bus" d="M78 114H146" marker-start="url(#a1)" marker-end="url(#a1)"/><text class="lb" x="112" y="96" text-anchor="middle">CONTROL</text><text class="lb" x="112" y="106" text-anchor="middle">BUS</text>
+        <path class="bus" d="M214 114H282" marker-start="url(#a1)" marker-end="url(#a1)"/><text class="lb" x="248" y="96" text-anchor="middle">CONTROL</text><text class="lb" x="248" y="106" text-anchor="middle">BUS</text>
+        <path class="bus" d="M60 170H316"/><text class="lb" x="188" y="188" text-anchor="middle">ADDRESS BUS</text>
+        <path class="bus" d="M180 142V168" marker-end="url(#a1)"/>
+        <path class="bus" d="M60 168V142" marker-end="url(#a1)"/>
+        <path class="bus" d="M316 168V142" marker-end="url(#a1)"/>
+        <path class="bus" d="M28 140V198" marker-end="url(#a1)"/>
+        <rect class="bx dev" x="12" y="200" width="64" height="36" rx="6"/><text class="bt" x="44" y="215" text-anchor="middle">OUTPUT</text><text class="bt" x="44" y="226" text-anchor="middle">DEVICE</text>
+      </svg>
+      <dl class="def">
+        <div><dt>Input device</dt><dd>Memasukkan data dan perintah. Contoh: keyboard, mouse, scanner.</dd></div>
+        <div><dt>I/O ports</dt><dd>Gerbang penghubung CPU dengan perangkat luar. Mengatur lalu lintas data masuk dan keluar.</dd></div>
+        <div><dt>CPU</dt><dd>Pusat pengolah. <b>CU</b> mengambil dan menerjemahkan instruksi lalu mengatur sinyal kontrol. <b>ALU</b> mengerjakan operasi hitung dan logika. Register menyimpan data sementara di dalam CPU.</dd></div>
+        <div><dt>Memori</dt><dd><b>RAM</b> menyimpan program dan data yang sedang berjalan, isinya hilang saat listrik mati. <b>ROM</b> menyimpan program tetap seperti bootstrap, isinya bertahan.</dd></div>
+        <div><dt>Output device</dt><dd>Menampilkan hasil. Contoh: monitor, printer, speaker.</dd></div>
+        <div><dt>Data bus</dt><dd>Jalur dua arah pembawa data.</dd></div>
+        <div><dt>Address bus</dt><dd>Jalur satu arah dari CPU, membawa alamat lokasi memori atau I/O.</dd></div>
+        <div><dt>Control bus</dt><dd>Pembawa sinyal kendali: read, write, interrupt, clock.</dd></div>
+      </dl>
+      <h4>Cara kerja satu instruksi</h4>
+      <ol>
+        <li>Data atau program masuk lewat input device dan I/O port, lalu disimpan di memori.</li>
+        <li><b>Fetch</b>: CPU mengirim alamat lewat address bus dan sinyal read lewat control bus. Instruksi datang lewat data bus.</li>
+        <li><b>Decode</b>: CU menerjemahkan instruksi.</li>
+        <li><b>Execute</b>: ALU mengerjakan operasi.</li>
+        <li>Hasil disimpan ke memori atau dikirim ke output device lewat I/O port.</li>
+      </ol>
+    </div>
+  </details>
+
+  <details class="mt" id="m-istilah">
+    <summary><span><span class="sn">Istilah komputer dan sistem operasi</span><span class="ss">Cari istilah, definisi satu kalimat</span></span></summary>
+    <div class="mb">
+      <label class="sr" for="gq">Cari istilah</label>
+      <input class="search" id="gq" type="search" placeholder="Cari istilah, misalnya quantum" autocomplete="off">
+      <p class="meta" id="gcount"></p>
+      <div class="gl" id="glist"></div>
+    </div>
+  </details>
+
+  <details class="mt" id="m-distro">
+    <summary><span><span class="sn">Distro Linux</span><span class="ss">15 distro dan keluarganya</span></span></summary>
+    <div class="mb">
+      <p>Linux adalah <b>kernel</b> buatan Linus Torvalds (1991). <b>Distro</b> adalah kernel yang dipaketkan dengan aplikasi, desktop, dan package manager.</p>
+      <div class="fam">
+        <div><b>Debian dan turunan</b><span>Debian, Ubuntu, Linux Mint, Kali Linux, Pop!_OS, elementary OS, Zorin OS</span></div>
+        <div><b>Red Hat</b><span>Fedora, Red Hat Enterprise Linux, CentOS Stream</span></div>
+        <div><b>Arch</b><span>Arch Linux, Manjaro</span></div>
+        <div><b>SUSE</b><span>openSUSE</span></div>
+        <div><b>Independen</b><span>Slackware, Gentoo</span></div>
+      </div>
+      <p class="note">Total 15. Hafalkan satu distro dari tiap keluarga, lalu tambahkan turunannya.</p>
+    </div>
+  </details>
+</section>
+
+<!-- LATIHAN -->
+<section class="view" id="v-latihan" aria-labelledby="h-latihan" hidden>
+  <h2 id="h-latihan">Latihan soal</h2>
+  <p class="lead">Kuis pilihan ganda untuk menguji konsep, lalu soal uraian bergaya UTS.</p>
+  <div class="card" id="quiz"></div>
+
+  <h3>Soal uraian</h3>
+  <article class="card ur">
+    <span class="tag">Soal 1 · 20 poin</span>
+    <p>Berdasarkan diagram komponen sistem komputer, jelaskan fungsi tiap komponen dan cara kerjanya.</p>
+    <button type="button" class="link" data-go="m-arsitektur">Lihat diagramnya</button>
+    <label class="sr" for="u1">Jawaban soal 1</label>
+    <textarea id="u1" rows="4" placeholder="Tulis jawabanmu dulu, lalu buka kunci."></textarea>
+    <div><button type="button" class="btn ghost" data-key="k1" aria-expanded="false" aria-controls="k1">Lihat kunci</button></div>
+    <div class="key" id="k1" hidden>
+      <ul>
+        <li>Input device memasukkan data. I/O port menyalurkannya ke CPU dan memori.</li>
+        <li>CPU: CU mengambil, menerjemahkan instruksi, dan mengatur sinyal. ALU menghitung dan melakukan logika.</li>
+        <li>Memori: RAM menyimpan program dan data yang berjalan. ROM menyimpan program tetap.</li>
+        <li>Output device menampilkan hasil.</li>
+        <li>Data bus membawa data (dua arah), address bus membawa alamat (dari CPU), control bus membawa sinyal kendali.</li>
+        <li>Alur: fetch, decode, execute, simpan atau tampilkan hasil.</li>
+      </ul>
+    </div>
+  </article>
+  <article class="card ur">
+    <span class="tag">Soal 2 · 20 poin</span>
+    <p>Sebutkan dan jelaskan keadaan suatu proses, lalu gambarkan diagramnya.</p>
+    <label class="sr" for="u2">Jawaban soal 2</label>
+    <textarea id="u2" rows="4" placeholder="Tulis jawabanmu dulu, lalu buka kunci."></textarea>
+    <div><button type="button" class="btn ghost" data-key="k2" aria-expanded="false" aria-controls="k2">Lihat kunci</button></div>
+    <div class="key" id="k2" hidden>
+      <ul>
+        <li>Lima state: New, Ready, Running, Waiting, Terminated.</li>
+        <li>Transisi: admitted (New ke Ready), dispatch (Ready ke Running), interrupt (Running ke Ready), I/O atau event wait (Running ke Waiting), I/O atau event selesai (Waiting ke Ready), exit (Running ke Terminated).</li>
+      </ul>
+      <button type="button" class="link" data-go="m-proses">Cocokkan dengan diagram</button>
+    </div>
+  </article>
+  <article class="card ur">
+    <span class="tag">Soal 3 · 50 poin</span>
+    <p>Buat Gantt chart dan hitung rata-rata waiting time dengan FCFS, SJF, Priority, dan Round Robin (q = 3) untuk 10 proses di contoh soal.</p>
+    <div><button type="button" class="btn" data-go="simulasi">Buka simulasi</button></div>
+    <p class="note">Kerjakan dulu di kertas, lalu cocokkan Gantt chart dan angkanya.</p>
+  </article>
+  <article class="card ur">
+    <span class="tag">Soal 4</span>
+    <p>Sebutkan 15 macam distro Linux.</p>
+    <label class="sr" for="u4">Jawaban soal 4, satu distro per baris</label>
+    <textarea id="u4" rows="6" placeholder="Satu distro per baris"></textarea>
+    <p class="counter" id="c4" aria-live="polite">0 / 15</p>
+    <div><button type="button" class="btn ghost" data-key="k4" aria-expanded="false" aria-controls="k4">Lihat kunci</button></div>
+    <div class="key" id="k4" hidden>
+      <ol>
+        <li>Debian</li><li>Ubuntu</li><li>Linux Mint</li><li>Kali Linux</li><li>Pop!_OS</li>
+        <li>elementary OS</li><li>Zorin OS</li><li>Fedora</li><li>Red Hat Enterprise Linux</li><li>CentOS Stream</li>
+        <li>Arch Linux</li><li>Manjaro</li><li>openSUSE</li><li>Slackware</li><li>Gentoo</li>
+      </ol>
+    </div>
+  </article>
+</section>
+
+<!-- SIMULASI -->
+<section class="view" id="v-simulasi" aria-labelledby="h-sim" hidden>
+  <h2 id="h-sim">Simulasi penjadwalan</h2>
+  <p class="lead">Soal 3 contoh. Pilih algoritma, lihat Gantt chart dan waiting time. Angka di tabel bisa diubah.</p>
+
+  <div class="seg" role="group" aria-label="Pilih algoritma">
+    <button type="button" data-algo="fcfs" aria-pressed="true">FCFS</button>
+    <button type="button" data-algo="sjf" aria-pressed="false">SJF</button>
+    <button type="button" data-algo="prio" aria-pressed="false">Priority</button>
+    <button type="button" data-algo="rr" aria-pressed="false">RR</button>
+  </div>
+
+  <div class="opts-row">
+    <div class="fld" id="x-rr" hidden><label for="rr-q">Quantum</label><input id="rr-q" type="number" inputmode="numeric" min="1" step="1" value="3" style="width:90px"></div>
+    <div class="fld" id="x-prio" hidden><label for="prio-dir">Aturan prioritas</label>
+      <select id="prio-dir"><option value="low">Angka kecil = tinggi</option><option value="high">Angka besar = tinggi</option></select>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="eyebrow" id="g-title" style="margin-bottom:10px">Gantt chart · FCFS</p>
+    <div class="gscroll" tabindex="0" role="region" aria-label="Gantt chart, geser ke samping"><div class="gantt" id="gantt"></div></div>
+    <p class="hint">Geser ke samping untuk melihat semua. Ketuk baris proses di bawah untuk menyorot.</p>
+  </div>
+
+  <div class="card">
+    <table class="res" id="res">
+      <thead><tr><th>Proses</th><th class="n">Selesai</th><th class="n">Waiting</th></tr></thead>
+      <tbody id="res-b"></tbody>
+    </table>
+    <div class="avg"><b id="avg-n">0</b><span id="avg-s"></span></div>
+  </div>
+
+  <h3>Perbandingan rata-rata waiting</h3>
+  <div class="cmp" id="cmp"></div>
+
+  <h3>Data proses</h3>
+  <div class="card">
+    <table class="sim-tbl">
+      <thead><tr><th>Proses</th><th>Burst</th><th>Arrival</th><th>Prio</th></tr></thead>
+      <tbody id="sim-b"></tbody>
+    </table>
+    <div style="margin-top:12px"><button type="button" class="btn ghost" id="reset">Kembalikan data foto</button></div>
+    <p class="note" style="margin-top:12px">Burst P1 = 24, P7 = 7, dan P9 = 15 dibaca dari angka cetak di foto. Coretan tangan (24+14, 7+68, 15+35) tidak dipakai. Ubah angkanya jika soal aslimu berbeda. SJF dan Priority dihitung non-preemptive. CPU dianggap mulai dari waktu 0.</p>
+  </div>
+</section>
+
+</main>
+
+<nav class="nav" aria-label="Menu utama">
+  <div class="nav-in pad">
+    <a href="#kisi" data-nav="kisi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1.2 1.2L7 4.8M3.5 12l1.2 1.2L7 10.8M3.5 18l1.2 1.2L7 16.8"/></svg><span>Kisi-kisi</span></a>
+    <a href="#materi" data-nav="materi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h14v15H6a2 2 0 0 0-2 2z"/><path d="M4 20a2 2 0 0 0 2 2h14v-4"/></svg><span>Materi</span></a>
+    <a href="#latihan" data-nav="latihan"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.2 2.8 2.8L16.5 9"/></svg><span>Latihan</span></a>
+    <a href="#simulasi" data-nav="simulasi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h7M8 12h9M13 18h7" stroke-width="3"/></svg><span>Simulasi</span></a>
+  </div>
+</nav>
+
+<script>
+(function () {
+"use strict";
+var $ = function (id) { return document.getElementById(id); };
+
+/* Penjadwalan CPU. Proses: {id, bt, at, pr}. Hasil: {gantt:[{id,s,e}], wt:{id:n}, avg} */
+function runSched(procs, algo, opt) {
+  opt = opt || {};
+  var q = opt.quantum || 3;
+  var lowFirst = opt.lowFirst !== false; // angka kecil = prioritas tinggi
+  var list = procs.map(function (p, i) {
+    return { id: p.id, bt: p.bt, at: p.at, pr: p.pr, rem: p.bt, idx: i, fin: 0 };
+  });
+  var gantt = [];
+  var t = 0;
+  function push(id, s, e) {
+    if (e <= s) return;
+    var last = gantt[gantt.length - 1];
+    if (last && last.id === id && last.e === s) { last.e = e; } else { gantt.push({ id: id, s: s, e: e }); }
+  }
+  if (algo === 'rr') {
+    var pending = list.slice().sort(function (a, b) { return a.at - b.at || a.idx - b.idx; });
+    var queue = [];
+    var done = 0;
+    t = pending.length ? pending[0].at : 0;
+    function admit(upto) {
+      while (pending.length && pending[0].at <= upto) { queue.push(pending.shift()); }
+    }
+    admit(t);
+    while (done < list.length) {
+      if (!queue.length) { t = pending[0].at; admit(t); continue; }
+      var p = queue.shift();
+      var run = Math.min(q, p.rem);
+      push(p.id, t, t + run);
+      t += run;
+      p.rem -= run;
+      admit(t);
+      if (p.rem > 0) { queue.push(p); } else { p.fin = t; done++; }
+    }
+  } else {
+    var left = list.slice();
+    t = Math.min.apply(null, list.map(function (p) { return p.at; }));
+    while (left.length) {
+      var ready = left.filter(function (p) { return p.at <= t; });
+      if (!ready.length) {
+        t = Math.min.apply(null, left.map(function (p) { return p.at; }));
+        continue;
+      }
+      ready.sort(function (a, b) {
+        var k;
+        if (algo === 'fcfs') k = a.at - b.at;
+        else if (algo === 'sjf') k = a.bt - b.bt;
+        else k = lowFirst ? a.pr - b.pr : b.pr - a.pr;
+        return k || a.at - b.at || a.idx - b.idx;
+      });
+      var c = ready[0];
+      push(c.id, t, t + c.bt);
+      t += c.bt;
+      c.fin = t;
+      left.splice(left.indexOf(c), 1);
+    }
+  }
+  var wt = {};
+  var sum = 0;
+  list.forEach(function (p) {
+    wt[p.id] = p.fin - p.at - p.bt;
+    sum += wt[p.id];
+  });
+  return { gantt: gantt, wt: wt, avg: sum / list.length };
+}
+if (typeof module !== 'undefined') { module.exports = runSched; }
+
+
+/* ---------- data ---------- */
+var VIEWS = ["kisi", "materi", "latihan", "simulasi"];
+var TOPICS = [
+  { id: "thread", t: "Multithread", d: "Thread vs proses, bagian yang dibagi, model thread.", q: "Disebut di kisi-kisi dosen", m: "m-thread" },
+  { id: "proses", t: "Siklus proses", d: "Lima state proses, transisi, dan diagramnya.", q: "Contoh soal 2 · 20 poin · CPMK 1", m: "m-proses" },
+  { id: "jadwal", t: "Empat algoritma penjadwalan", d: "FCFS, SJF, Priority, Round Robin. Gantt chart dan waiting time.", q: "Contoh soal 3 · 50 poin · CPMK 2", m: "m-jadwal" },
+  { id: "arsitektur", t: "Fungsi komputer dan arsitektur", d: "Komponen sistem komputer, tiga bus, cara kerja instruksi.", q: "Contoh soal 1 · 20 poin · CPMK 1", m: "m-arsitektur" },
+  { id: "istilah", t: "Istilah komputer dan sistem operasi", d: "Daftar istilah singkat yang sering keluar.", q: "Disebut di kisi-kisi dosen", m: "m-istilah" },
+  { id: "linux", t: "Distro Linux", d: "15 distro dan keluarganya.", q: "Contoh soal 4", m: "m-distro" }
+];
+var TERMS = [
+  ["Kernel", "Inti sistem operasi yang mengelola CPU, memori, dan perangkat."],
+  ["Shell", "Antarmuka pengguna ke kernel, berbasis teks (CLI) atau grafis."],
+  ["System call", "Antarmuka program untuk meminta layanan kernel."],
+  ["Proses", "Program yang sedang dieksekusi."],
+  ["Thread", "Unit eksekusi dalam proses. Berbagi kode, data, dan file."],
+  ["PCB", "Process Control Block. Catatan state, program counter, dan register tiap proses."],
+  ["Program counter", "Register yang menyimpan alamat instruksi berikutnya."],
+  ["Register", "Memori kecil dan sangat cepat di dalam CPU."],
+  ["Cache", "Memori cepat untuk data yang sering dipakai, di antara CPU dan RAM."],
+  ["Context switch", "Menyimpan state proses lama dan memuat state proses baru."],
+  ["Scheduler", "Bagian OS yang memilih proses berikutnya untuk CPU."],
+  ["Dispatcher", "Memberikan CPU kepada proses pilihan scheduler."],
+  ["Ready queue", "Antrean proses yang siap jalan."],
+  ["Burst time", "Lama proses memakai CPU."],
+  ["Arrival time", "Waktu proses tiba di ready queue."],
+  ["Waiting time", "Total waktu proses menunggu di ready queue."],
+  ["Turnaround time", "Waktu dari tiba sampai selesai."],
+  ["Response time", "Waktu dari tiba sampai pertama kali dilayani CPU."],
+  ["Throughput", "Jumlah proses selesai per satuan waktu."],
+  ["CPU utilization", "Persentase waktu CPU dalam keadaan sibuk."],
+  ["Quantum", "Jatah waktu CPU tiap giliran pada Round Robin."],
+  ["Preemptive", "OS boleh menghentikan proses yang sedang berjalan."],
+  ["Non-preemptive", "Proses berjalan sampai selesai atau menunggu sendiri."],
+  ["Starvation", "Proses menunggu terlalu lama tanpa dilayani."],
+  ["Aging", "Menaikkan prioritas proses yang lama menunggu."],
+  ["Deadlock", "Proses saling menunggu resource, tidak ada yang maju."],
+  ["Interrupt", "Sinyal yang menghentikan sementara CPU untuk ditangani."],
+  ["Multiprogramming", "Beberapa program di memori agar CPU tidak menganggur."],
+  ["Multitasking", "CPU berganti cepat antar proses sehingga tampak berjalan bersamaan."],
+  ["Multiprocessing", "Banyak CPU atau core bekerja sekaligus."],
+  ["Virtual memory", "Memakai disk sebagai perluasan RAM."],
+  ["Bootstrap", "Program awal di ROM atau firmware yang memuat OS saat komputer menyala."],
+  ["Spooling", "Antrean data untuk perangkat lambat, misalnya printer."],
+  ["Buffer", "Penampung sementara data di antara dua perangkat berbeda kecepatan."]
+];
+var TL = { arsitektur: "Arsitektur", proses: "Proses", thread: "Thread", jadwal: "Penjadwalan", istilah: "Istilah", linux: "Linux" };
+var Q = [
+  { t: "arsitektur", q: "Bagian CPU yang mengerjakan operasi hitung dan logika adalah...", o: ["Control Unit", "ALU", "Register", "Address bus"], a: 1, e: "ALU mengerjakan operasi aritmatika dan logika. CU mengambil dan menerjemahkan instruksi." },
+  { t: "arsitektur", q: "Jalur yang membawa alamat lokasi memori dari CPU adalah...", o: ["Data bus", "Control bus", "Address bus", "Power bus"], a: 2, e: "Address bus satu arah, dari CPU ke memori atau I/O." },
+  { t: "arsitektur", q: "Memori yang isinya bertahan saat listrik mati dan menyimpan program bootstrap adalah...", o: ["RAM", "ROM", "Cache", "Register"], a: 1, e: "ROM bersifat tetap. RAM hilang isinya saat listrik mati." },
+  { t: "arsitektur", q: "Urutan siklus instruksi CPU yang benar adalah...", o: ["Execute, Fetch, Decode", "Decode, Execute, Fetch", "Fetch, Execute, Decode", "Fetch, Decode, Execute"], a: 3, e: "Ambil instruksi (fetch), terjemahkan (decode), lalu kerjakan (execute)." },
+  { t: "arsitektur", q: "Sinyal read, write, dan interrupt dibawa oleh...", o: ["Control bus", "Data bus", "Address bus", "I/O port"], a: 0, e: "Control bus membawa sinyal kendali. Data bus membawa data, address bus membawa alamat." },
+  { t: "proses", q: "Proses menunggu selesainya operasi I/O. State proses itu adalah...", o: ["Ready", "Running", "Waiting", "Terminated"], a: 2, e: "Proses yang menunggu I/O atau event berada di state Waiting (Blocked)." },
+  { t: "proses", q: "Quantum habis saat proses Running. Proses berpindah ke state...", o: ["Waiting", "Ready", "Terminated", "New"], a: 1, e: "Interrupt dari timer mengembalikan proses ke ready queue. Ia tidak menunggu I/O, jadi bukan Waiting." },
+  { t: "proses", q: "Transisi dari Ready ke Running disebut...", o: ["Admitted", "Interrupt", "Exit", "Dispatch"], a: 3, e: "Scheduler memilih proses Ready lalu dispatcher menjalankannya (dispatch)." },
+  { t: "proses", q: "Struktur data OS yang menyimpan state, program counter, dan register tiap proses adalah...", o: ["PCB", "Shell", "Kernel", "Buffer"], a: 0, e: "PCB (Process Control Block) dipakai saat context switch." },
+  { t: "thread", q: "Yang dibagi antar thread dalam satu proses adalah...", o: ["Stack", "Register", "Kode dan data", "Program counter"], a: 2, e: "Thread berbagi kode, data, dan file. Stack, register, dan program counter milik tiap thread." },
+  { t: "thread", q: "Mana yang BUKAN manfaat multithreading?", o: ["Aplikasi tetap responsif", "Berbagi resource lebih mudah", "Dibuat lebih ringan daripada proses", "Tiap thread punya ruang alamat terpisah penuh"], a: 3, e: "Thread dalam satu proses berbagi ruang alamat. Ruang alamat terpisah adalah ciri proses." },
+  { t: "thread", q: "Pada model many-to-one, jika satu thread melakukan blocking system call maka...", o: ["Hanya thread itu yang berhenti", "Seluruh proses ikut terblokir", "Kernel membuat thread baru", "Thread lain pindah ke core lain"], a: 1, e: "Semua user thread berbagi satu kernel thread, jadi semuanya ikut terblokir dan tidak bisa paralel." },
+  { t: "jadwal", q: "Algoritma yang memberi rata-rata waiting time terkecil untuk sekumpulan proses adalah...", o: ["FCFS", "SJF", "Round Robin", "Priority"], a: 1, e: "SJF mendahulukan burst terpendek sehingga rata-rata waiting minimum. Kelemahannya starvation." },
+  { t: "jadwal", q: "Proses berprioritas rendah tidak pernah dilayani. Masalah ini diatasi dengan...", o: ["Aging", "Spooling", "Paging", "Quantum besar"], a: 0, e: "Aging menaikkan prioritas proses secara bertahap selama menunggu." },
+  { t: "jadwal", q: "Round Robin dengan quantum sangat besar berperilaku seperti...", o: ["SJF", "Priority", "FCFS", "SRTF"], a: 2, e: "Tiap proses selesai dalam satu giliran, urutannya sama seperti FCFS." },
+  { t: "jadwal", q: "Rumus waiting time yang benar adalah...", o: ["Selesai - burst", "Turnaround - burst", "Burst - arrival", "Selesai + arrival"], a: 1, e: "Waiting = turnaround - burst, dengan turnaround = selesai - arrival." },
+  { t: "jadwal", q: "Convoy effect paling sering muncul pada...", o: ["Round Robin", "SJF", "FCFS", "Priority"], a: 2, e: "Pada FCFS, proses pendek menunggu di belakang satu proses panjang." },
+  { t: "istilah", q: "Context switch adalah...", o: ["Menyimpan state proses lama dan memuat state proses baru", "Menghapus proses dari memori", "Menambah kapasitas RAM", "Mengganti kernel"], a: 0, e: "CPU berpindah proses dengan menyimpan dan memuat state lewat PCB." },
+  { t: "istilah", q: "Scheduler bersifat preemptive artinya...", o: ["Proses tidak bisa dihentikan", "OS dapat menghentikan proses yang sedang berjalan", "Hanya proses I/O yang dilayani", "Tidak butuh interrupt"], a: 1, e: "Pada preemptive, OS boleh mengambil CPU dari proses yang berjalan, contohnya Round Robin." },
+  { t: "istilah", q: "System call adalah...", o: ["Jenis virus komputer", "Jalur data di CPU", "Antarmuka program untuk meminta layanan kernel", "Kabel jaringan"], a: 2, e: "Program memanggil system call untuk mengakses file, proses, atau perangkat lewat kernel." },
+  { t: "linux", q: "Linux sendiri sebenarnya adalah...", o: ["Kernel", "Distro lengkap", "Aplikasi perkantoran", "Bahasa pemrograman"], a: 0, e: "Linux adalah kernel. Distro mengemasnya bersama aplikasi dan package manager." },
+  { t: "linux", q: "Distro Linux berbasis Debian adalah...", o: ["Fedora", "Arch Linux", "Ubuntu", "Gentoo"], a: 2, e: "Ubuntu turunan Debian. Fedora berasal dari keluarga Red Hat, Arch dan Gentoo independen." }
+];
+Q.forEach(function (x, i) { x.n = i; });
+
+/* ---------- penyimpanan ringan ---------- */
+var K_DONE = "so-uts-done", K_BEST = "so-uts-best";
+function load(k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } }
+function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+var done = load(K_DONE) || {};
+
+/* ---------- tampilan dan navigasi ---------- */
+var pendingOpen = null;
+function show(v) {
+  if (VIEWS.indexOf(v) < 0) { v = "kisi"; }
+  VIEWS.forEach(function (n) { $("v-" + n).hidden = n !== v; });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-nav]"), function (a) {
+    if (a.getAttribute("data-nav") === v) { a.setAttribute("aria-current", "page"); } else { a.removeAttribute("aria-current"); }
+  });
+  if (pendingOpen) {
+    var el = $(pendingOpen);
+    pendingOpen = null;
+    if (el) { el.open = true; el.scrollIntoView({ block: "start" }); return; }
+  }
+  window.scrollTo(0, 0);
+}
+function go(v, openId) {
+  pendingOpen = openId || null;
+  if (location.hash.slice(1) === v) { show(v); } else { location.hash = v; }
+}
+window.addEventListener("hashchange", function () { show(location.hash.slice(1)); });
+
+/* ---------- kisi-kisi ---------- */
+function updateProg() {
+  var n = TOPICS.filter(function (t) { return done[t.id]; }).length;
+  $("prog").textContent = n + "/" + TOPICS.length + " paham";
+}
+function renderTopics() {
+  $("topics").innerHTML = TOPICS.map(function (t) {
+    return '<li class="tp"><label class="ck"><input type="checkbox" id="c-' + t.id + '" data-topic="' + t.id + '"' + (done[t.id] ? " checked" : "") + '><span class="sr">Sudah paham: ' + t.t + '</span></label>' +
+      '<div class="tb"><h3>' + t.t + '</h3><p>' + t.d + '</p><p class="meta">' + t.q + '</p><button type="button" class="link" data-go="' + t.m + '">Baca materi</button></div></li>';
+  }).join("");
+  updateProg();
+}
+
+/* ---------- istilah ---------- */
+function renderGloss() {
+  var qv = $("gq").value.trim().toLowerCase();
+  var list = TERMS.filter(function (t) { return !qv || (t[0] + " " + t[1]).toLowerCase().indexOf(qv) > -1; });
+  $("gcount").textContent = list.length + " dari " + TERMS.length + " istilah";
+  $("glist").innerHTML = list.length ? list.map(function (t) {
+    return '<div class="gi"><b>' + t[0] + '</b><span>' + t[1] + '</span></div>';
+  }).join("") : '<p class="empty">Tidak ada istilah yang cocok. Coba kata lain.</p>';
+}
+
+/* ---------- kuis ---------- */
+var quiz = { phase: "start", topic: "all", list: [], i: 0, score: 0, wrong: [], picked: -1 };
+function shuffle(a) {
+  a = a.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function poolFor(topic) { return Q.filter(function (x) { return topic === "all" || x.t === topic; }); }
+function qStart(list) {
+  quiz.list = shuffle(list); quiz.i = 0; quiz.score = 0; quiz.wrong = []; quiz.picked = -1; quiz.phase = "run";
+  qRender();
+}
+function qRender() {
+  var box = $("quiz"), h = "";
+  if (quiz.phase === "start") {
+    var best = load(K_BEST);
+    h += '<span class="tag">Pilihan ganda</span><p class="qq">Pilih topik, lalu mulai.</p><div class="chips" role="group" aria-label="Topik kuis">';
+    h += '<button type="button" class="chip" data-topic-pick="all" aria-pressed="' + (quiz.topic === "all") + '">Semua</button>';
+    Object.keys(TL).forEach(function (k) {
+      h += '<button type="button" class="chip" data-topic-pick="' + k + '" aria-pressed="' + (quiz.topic === k) + '">' + TL[k] + '</button>';
+    });
+    h += '</div><div class="qa" style="margin-top:0"><button type="button" class="btn" data-qstart>Mulai (' + poolFor(quiz.topic).length + ' soal)</button></div>';
+    if (best !== null) { h += '<p class="meta" style="margin-top:12px">Skor terbaik semua topik: ' + best + ' dari ' + Q.length + '</p>'; }
+  } else if (quiz.phase === "run") {
+    var x = quiz.list[quiz.i];
+    h += '<div class="qh"><span class="tag">' + TL[x.t] + '</span><span class="cnt">Soal ' + (quiz.i + 1) + ' dari ' + quiz.list.length + '</span></div>';
+    h += '<div class="bar"><i style="width:' + (quiz.i / quiz.list.length * 100) + '%"></i></div><p class="qq">' + x.q + '</p><div class="opts">';
+    x.o.forEach(function (o, k) {
+      h += '<button type="button" class="opt" data-pick="' + k + '"><span class="ol">' + "ABCD".charAt(k) + '</span><span>' + o + '</span></button>';
+    });
+    h += '</div><div id="fb" aria-live="polite"></div>';
+  } else {
+    h += '<span class="tag">Selesai</span><div class="score">' + quiz.score + ' / ' + quiz.list.length + '</div>';
+    var pct = quiz.score / quiz.list.length;
+    h += '<p>' + (pct === 1 ? "Semua benar. Lanjut ke soal uraian." : pct >= 0.7 ? "Sudah kuat. Ulangi soal yang salah untuk menutup celah." : "Baca lagi materinya, lalu ulangi soal yang salah.") + '</p><div class="qa">';
+    if (quiz.wrong.length) { h += '<button type="button" class="btn" data-qretry>Ulangi yang salah (' + quiz.wrong.length + ')</button>'; }
+    h += '<button type="button" class="btn ghost" data-qhome>Pilih topik lain</button></div>';
+  }
+  box.innerHTML = h;
+}
+function qPick(k) {
+  if (quiz.picked > -1) { return; }
+  quiz.picked = k;
+  var x = quiz.list[quiz.i], ok = k === x.a;
+  if (ok) { quiz.score++; } else { quiz.wrong.push(x); }
+  var btns = document.querySelectorAll("#quiz .opt");
+  Array.prototype.forEach.call(btns, function (b, i) {
+    b.disabled = true;
+    if (i === x.a) { b.classList.add("ok"); } else if (i === k) { b.classList.add("bad"); }
+  });
+  var last = quiz.i === quiz.list.length - 1;
+  $("fb").innerHTML = '<div class="fb ' + (ok ? "ok" : "bad") + '"><strong>' + (ok ? "Benar." : "Belum tepat. Jawaban: " + "ABCD".charAt(x.a) + ".") + '</strong>' + x.e + '</div>' +
+    '<div class="qa"><button type="button" class="btn" data-qnext>' + (last ? "Lihat hasil" : "Soal berikutnya") + '</button></div>';
+}
+function qNext() {
+  if (quiz.i < quiz.list.length - 1) { quiz.i++; quiz.picked = -1; qRender(); window.scrollTo(0, $("quiz").getBoundingClientRect().top + window.pageYOffset - 140); return; }
+  quiz.phase = "end";
+  if (quiz.topic === "all" && quiz.list.length === Q.length) {
+    var b = load(K_BEST);
+    if (b === null || quiz.score > b) { save(K_BEST, quiz.score); }
+  }
+  qRender();
+}
+
+/* ---------- uraian ---------- */
+function countU4() {
+  var seen = {}, n = 0;
+  $("u4").value.split("\n").forEach(function (l) {
+    var s = l.trim().toLowerCase();
+    if (s && !seen[s]) { seen[s] = 1; n++; }
+  });
+  $("c4").textContent = n + " / 15";
+  $("c4").className = "counter" + (n >= 15 ? " full" : "");
+}
+
+/* ---------- simulasi ---------- */
+var DEF = [["P1", 24, 9, 4], ["P2", 3, 7, 2], ["P3", 6, 5, 7], ["P4", 4, 3, 6], ["P5", 9, 4, 3],
+           ["P6", 2, 10, 1], ["P7", 7, 2, 8], ["P8", 20, 6, 5], ["P9", 15, 1, 9], ["P10", 10, 8, 10]];
+var NAMES = { fcfs: "FCFS", sjf: "SJF", prio: "Priority", rr: "Round Robin" };
+var sim = { algo: "fcfs", hl: null };
+function fmt(n) { return (Math.round(n * 100) / 100).toFixed(2).replace(".", ","); }
+function hue(i) { return 26 + (i % 5) * 15; }
+function buildTable() {
+  $("sim-b").innerHTML = DEF.map(function (d, i) {
+    function cell(p, v, min) { return '<td><input id="' + p + i + '" type="number" inputmode="numeric" min="' + min + '" step="1" value="' + v + '" aria-label="' + p.toUpperCase() + ' ' + d[0] + '"></td>'; }
+    return '<tr><td><span class="pid"><i class="sw' + (i >= 5 ? " alt" : "") + '" style="--h:' + hue(i) + '"></i>' + d[0] + '</span></td>' + cell("bt", d[1], 1) + cell("at", d[2], 0) + cell("pr", d[3], 0) + '</tr>';
+  }).join("");
+}
+function readProcs() {
+  return DEF.map(function (d, i) {
+    function v(p, min, fb) { var n = parseInt($(p + i).value, 10); return isNaN(n) || n < min ? fb : n; }
+    return { id: d[0], bt: v("bt", 1, d[1]), at: v("at", 0, d[2]), pr: v("pr", 0, d[3]) };
+  });
+}
+function simOpts() {
+  var q = parseInt($("rr-q").value, 10);
+  return { quantum: isNaN(q) || q < 1 ? 3 : q, lowFirst: $("prio-dir").value === "low" };
+}
+function simRender() {
+  var P = readProcs(), opt = simOpts();
+  var idx = {};
+  P.forEach(function (p, i) { idx[p.id] = i; });
+  var r = runSched(P, sim.algo, opt);
+  $("x-rr").hidden = sim.algo !== "rr";
+  $("x-prio").hidden = sim.algo !== "prio";
+  Array.prototype.forEach.call(document.querySelectorAll("[data-algo]"), function (b) {
+    b.setAttribute("aria-pressed", String(b.getAttribute("data-algo") === sim.algo));
+  });
+  $("g-title").textContent = "Gantt chart · " + NAMES[sim.algo] + (sim.algo === "rr" ? " (q = " + opt.quantum + ")" : "");
+
+  var U = 18, g = "", t = 0;
+  r.gantt.forEach(function (s) {
+    if (s.s > t) { g += '<div class="gcol" style="width:' + (s.s - t) * U + 'px"><div class="blk idle" title="CPU menganggur">-</div><span class="tk">' + t + '</span></div>'; }
+    g += '<div class="gcol" style="width:' + (s.e - s.s) * U + 'px"><div class="blk' + (idx[s.id] >= 5 ? " alt" : "") + (sim.hl === s.id ? " on" : "") + '" style="--h:' + hue(idx[s.id]) + '" title="' + s.id + ': ' + s.s + ' sampai ' + s.e + '">' + s.id + '</div><span class="tk">' + s.s + '</span></div>';
+    t = s.e;
+  });
+  g += '<div class="gcol end"><div class="blk" style="visibility:hidden;height:0"></div><span class="tk">' + t + '</span></div>';
+  var gt = $("gantt");
+  gt.innerHTML = g;
+  if (sim.hl) { gt.setAttribute("data-hl", "1"); } else { gt.removeAttribute("data-hl"); }
+
+  var sum = 0;
+  $("res-b").innerHTML = P.map(function (p, i) {
+    var w = r.wt[p.id]; sum += w;
+    return '<tr data-row="' + p.id + '" class="' + (sim.hl === p.id ? "sel" : "") + '"><td><span class="pid"><i class="sw' + (i >= 5 ? " alt" : "") + '" style="--h:' + hue(i) + '"></i>' + p.id + '</span></td><td class="n">' + (w + p.at + p.bt) + '</td><td class="n">' + w + '</td></tr>';
+  }).join("");
+  $("avg-n").textContent = fmt(r.avg);
+  $("avg-s").textContent = "rata-rata waiting = " + sum + " / " + P.length;
+
+  var all = Object.keys(NAMES).map(function (k) { return { k: k, v: runSched(P, k, opt).avg }; });
+  var min = Math.min.apply(null, all.map(function (a) { return a.v; }));
+  $("cmp").innerHTML = all.map(function (a) {
+    return '<button type="button" data-algo="' + a.k + '" aria-pressed="' + (a.k === sim.algo) + '"><small>' + NAMES[a.k] + '</small><b class="' + (a.v === min ? "best" : "") + '">' + fmt(a.v) + '</b>' + (a.v === min ? '<small class="best">terkecil</small>' : '') + '</button>';
+  }).join("");
+}
+
+/* ---------- event ---------- */
+document.addEventListener("click", function (e) {
+  var el = e.target.closest ? e.target.closest("button, tr[data-row]") : null;
+  if (!el) { return; }
+  if (el.hasAttribute("data-go")) {
+    var g = el.getAttribute("data-go");
+    if (VIEWS.indexOf(g) > -1) { go(g); } else { go("materi", g); }
+  } else if (el.hasAttribute("data-key")) {
+    var k = $(el.getAttribute("data-key")), open = k.hidden;
+    k.hidden = !open;
+    el.setAttribute("aria-expanded", String(open));
+    el.textContent = open ? "Sembunyikan kunci" : "Lihat kunci";
+  } else if (el.hasAttribute("data-topic-pick")) { quiz.topic = el.getAttribute("data-topic-pick"); qRender();
+  } else if (el.hasAttribute("data-qstart")) { qStart(poolFor(quiz.topic));
+  } else if (el.hasAttribute("data-pick")) { qPick(parseInt(el.getAttribute("data-pick"), 10));
+  } else if (el.hasAttribute("data-qnext")) { qNext();
+  } else if (el.hasAttribute("data-qretry")) { qStart(quiz.wrong.slice());
+  } else if (el.hasAttribute("data-qhome")) { quiz.phase = "start"; qRender();
+  } else if (el.hasAttribute("data-algo")) { sim.algo = el.getAttribute("data-algo"); simRender();
+  } else if (el.id === "reset") { buildTable(); $("rr-q").value = "3"; $("prio-dir").value = "low"; sim.hl = null; simRender();
+  } else if (el.hasAttribute("data-row")) { var id = el.getAttribute("data-row"); sim.hl = sim.hl === id ? null : id; simRender(); }
+});
+document.addEventListener("change", function (e) {
+  var t = e.target;
+  if (t.getAttribute && t.getAttribute("data-topic")) {
+    done[t.getAttribute("data-topic")] = t.checked;
+    save(K_DONE, done);
+    updateProg();
+  } else if (t.id === "prio-dir") { simRender(); }
+});
+document.addEventListener("input", function (e) {
+  var t = e.target;
+  if (t.id === "gq") { renderGloss(); }
+  else if (t.id === "u4") { countU4(); }
+  else if (t.id === "rr-q" || (t.closest && t.closest("#sim-b"))) { simRender(); }
+});
+
+/* ---------- splash ---------- */
+var sp = $("splash");
+function hideSplash() { if (sp) { sp.hidden = true; } }
+if (sp) { sp.addEventListener("click", hideSplash); setTimeout(hideSplash, 3400); }
+
+/* ---------- mulai ---------- */
+renderTopics();
+renderGloss();
+qRender();
+buildTable();
+simRender();
+show(location.hash.slice(1));
+})();
+</script>
+
+</body></html>
